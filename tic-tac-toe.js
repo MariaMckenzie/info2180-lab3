@@ -5,31 +5,34 @@
   Maria McKenzie
 */
 
+const all_spaces = [];
+const player1 = [];
+const player2 = [];
+const winning_spaces = [[0,1,2], [3,4,5], 
+                        [6,7,8], [0,3,6], 
+                        [1,4,7], [2,5,8],
+                        [0,4,8], [2,4,6]]
+
 document.addEventListener("DOMContentLoaded", () => {
-  let grid = document.getElementById("board");
-  //grid.setAttribute("class", "grid");
-  //grid.style.backgroundColor = "red";
+  let board = document.getElementById("board");
+  let grids = board.children;
 
-  //let boxes = document.getElementById(".grid");
-  //console.log(boxes);
-
-  //grid.classList.add("square");
-
-  //boxes[1].style.backgroundColor = "yellow";
-  //elements[5].style.backgroundColor = 'white';
-  let x = document.getElementById("board").children;
-
-  for (var i = 0; i < x.length; i++){
-    x[i].classList.add("square");
+  for (var i = 0; i < grids.length; i++){
+    grids[i].classList.add("square");
+    clicked(grids, i);
   }
-  
-  //x[3].classList.add("square");
-  //x[5].classList.add("square");
-  //x[7].classList.add("square");
-  //x[1].classList.add("square");
-  //x[1].classList.add("square");
-  //x[1].classList.add("square");
-  console.log(x);
+});
 
-})
+function clicked(positions, n) {
+  positions[n].addEventListener("click", function(){
+    if (positions[n].innerHTML != "X"){
+      positions[n].innerHTML = "X";
+      positions[n].classList.add("X");
+    }
+    else {     
+      positions[n].innerHTML = "O";
+      positions[n].classList.add("O"); 
+    }
+  });
 
+}
