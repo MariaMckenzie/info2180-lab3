@@ -5,12 +5,11 @@
   Maria McKenzie
 */
 
-const all_spaces = [];
-var m = 0;
+var count = 0;
 var ans = "";
 let winner = "";
-const player_x = ["playerX", []];
-const player_o = ["playerO", []];
+let player_x = ["playerX", []];
+let player_o = ["playerO", []];
 var last_move = "";
 const winning_spaces = [[0,1,2], [3,4,5], 
                         [6,7,8], [0,3,6], 
@@ -23,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let board = document.getElementById("board");
   let grids = board.children;
   let status = document.getElementById("status");
+  let btn = document.getElementsByClassName("btn");
 
   for (var i = 0; i < grids.length; i++){
     grids[i].classList.add("square");
@@ -32,6 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
     clicked(player_o[1], player_x[1], grids, i, status);
     hover(grids, i);
   }
+
+  new_board(btn[0], grids, status);
 
 });
 
@@ -45,10 +47,11 @@ function clicked(lst1, lst2, positions, n, st) {
       lst1.push(n);
       lst1.sort();
       if (lst1.length > 2) {
-        win(lst1);
+        win(lst1, st);
         if (ans == true){
           winner = "X";
-          st.innerHTML = "Congratulations! X is the Winner!";
+          st.classList.add("you-won");
+          st.innerHTML = "Congratulations! X is the Winner!";      
         }
       }
     }
@@ -59,9 +62,10 @@ function clicked(lst1, lst2, positions, n, st) {
       lst2.push(n);  
       lst2.sort();  
       if (lst2.length > 2) {
-        win(lst2);
+        win(lst2, st);
         if (ans == true){
           winner = "O";
+          st.classList.add("you-won");
           st.innerHTML = "Congratulations! O is the Winner!";      
         }
       }
@@ -81,7 +85,7 @@ function hover(positions, n){
 }
 
 //CHECK FOR WIN
-function win(lst) { 
+function win(lst, st) { 
   if (lst.length == 4) {
     let all_combinations = [ [lst[0], lst[1], lst[2]],
                              [lst[0], lst[1], lst[3]],
@@ -112,8 +116,36 @@ function win(lst) {
   }
 
   else {
-    console.log("draw");
+    console.log("DRAW!");
+    st.classList.remove("you-won");
+    st.innerHTML = "Draw! Start a new game.";
+    st.style.color = "red";
+    st.style.font = "bold";
   }
 }
 
-//NEW BOARD
+//NEW BOARD -> Reload page and reset variables
+function new_board(button, gr, st){
+  button.addEventListener("click", function(){
+  /*for (var i = 0; i < gr.length; i++){
+     gr[i].innerHTML = "";
+  }*/
+    
+    ans = "";
+    winner = "";
+    player_x = ["playerX", []];
+    player_o = ["playerO", []];
+    last_move = "";
+    st.innerHTML = "Move your mouse over a square and click to play an X or an O.";
+    st.classList.remove("you-won");
+
+    location = "index.html";
+    location.reload();    
+    
+  });
+
+  /*for (var i = 0; i < grids.length; i++){
+    clicked(player_o[1], player_x[1], grids, i, status);
+    hover(grids, i);
+  }*/
+}
